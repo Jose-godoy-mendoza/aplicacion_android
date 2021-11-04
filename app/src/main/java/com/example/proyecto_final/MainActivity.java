@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Obtener_Datos();
+        // Obtener_Datos();
     }
     public void busqueda(String id)
     {
@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    /*
+/*
     private void Obtener_Datos()
     {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://192.168.1.7:5001/api/").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://localhost:8081/api/").addConverterFactory(GsonConverterFactory.create()).build();
         Post_Productos post_productos = retrofit.create(Post_Productos.class);
         Call<List<Productos>> call = post_productos.getDatos();
         call.enqueue(new Callback<List<Productos>>() {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }*/
 
-    private void Obtener_Datos()
+    /*private void Obtener_Datos()
     {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com/").addConverterFactory(GsonConverterFactory.create()).build();
         Post_prueba post_prueba=retrofit.create(Post_prueba.class);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 Idtexto.setText(t.getMessage());
             }
         });
-    }
+    }*/
 
 
 }

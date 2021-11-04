@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface Post_Productos {
-    @GET("producto")
+    @GET("productos")
     Call<List<Productos>> getDatos();
 }

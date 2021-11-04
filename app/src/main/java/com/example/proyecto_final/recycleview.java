@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.proyecto_final.Interfaz.Post_prueba;
 import com.example.proyecto_final.Models.prueba;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +34,8 @@ public class recycleview extends AppCompatActivity {
     Button btn_buscar;
     EditText palabra_buscar;
     RecyclerView recycle_view;
-
+    ArrayList<prueba> arraylist;
+    prueba[] prueba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class recycleview extends AppCompatActivity {
         palabra_buscar=findViewById(R.id.palabra_buscar);
         recycle_view=findViewById(R.id.recycle_view);
         idtexto=findViewById(R.id.Idtexto);
+        arraylist = new ArrayList<>();
+        prueba = new prueba[100];
 
         recycle_view=findViewById(R.id.recycle_view);
         recycle_view.setHasFixedSize(true);
@@ -93,14 +97,12 @@ public class recycleview extends AppCompatActivity {
                     content+="Body: "+pr.getBody() + "\n\n";
                     idtexto.append(content);*/
 
-                    prueba[] prueba = new prueba[]
-                            {
-                                    new prueba(Integer.valueOf(pr.getUserId()),Integer.valueOf(pr.getId()),"TITULO: "+pr.getTitle() ,"BODY: "+pr.getBody()),
+                    prueba[i] = new prueba(Integer.valueOf(pr.getUserId()),Integer.valueOf(pr.getId()),"TITULO: "+pr.getTitle() ,"BODY: "+pr.getBody());
 
-                            };
-                    Adaptador adaptador = new Adaptador(prueba, recycleview.this);
-                    recycle_view.setAdapter(adaptador);
+                    i++;
                 }
+                Adaptador adaptador = new Adaptador(prueba, recycleview.this);
+                recycle_view.setAdapter(adaptador);
             }
 
             @Override
