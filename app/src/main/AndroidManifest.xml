@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_final">
-        <activity android:name=".recycleview"></activity>
+        <activity android:name=".searchView"></activity>
+        <activity android:name=".recycleview" />
         <activity android:name=".Busqueda" />
         <activity
             android:name=".MainActivity"

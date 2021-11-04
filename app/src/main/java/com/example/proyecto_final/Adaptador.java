@@ -1,5 +1,6 @@
 package com.example.proyecto_final;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,20 +8,53 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyecto_final.Models.prueba;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>
 {
     prueba[] prueba;
     Context context;
+    ArrayList<prueba> pruebas;
+    ArrayList<prueba> lista_original;
 
-    public Adaptador(prueba[] prueba, recycleview activity)
+    public Adaptador(ArrayList<prueba> pruebas, recycleview activity)
     {
-        this.prueba=prueba;
+        this.pruebas=pruebas;
         this.context=activity;
+        lista_original=new ArrayList<>();
+        lista_original.addAll(pruebas);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void Filtrar(String busqueda)
+    {
+        int longitud=busqueda.length();
+        if(longitud==0)
+        {
+            pruebas.clear();
+            pruebas.addAll(lista_original);
+        }
+        else
+        {
+            List<prueba> collection = pruebas.stream().filter(i -> i.getTitle().toLowerCase().contains(busqueda.toLowerCase())).collect(Collectors.toList());
+            pruebas.clear();
+            pruebas.addAll(collection);
+            for(prueba c: lista_original)
+            {
+                if(c.getTitle().toLowerCase().contains(busqueda.toLowerCase()))
+                {
+                    pruebas.add(c);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -34,7 +68,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull Adaptador.ViewHolder holder, int position) {
-        final prueba pruebaList = prueba[position];
+        final prueba pruebaList = pruebas.get(position);
         holder.txt_Id.setText(String.valueOf(pruebaList.getId()));
         holder.txt_UserId.setText(String.valueOf(pruebaList.getUserId()));
         holder.txt_title.setText(pruebaList.getTitle());
@@ -50,7 +84,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return prueba.length;
+        return pruebas.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

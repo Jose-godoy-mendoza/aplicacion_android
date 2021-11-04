@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.proyecto_final.Interfaz.Post_prueba;
@@ -28,19 +29,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class recycleview extends AppCompatActivity {
+public class recycleview extends AppCompatActivity implements SearchView.OnQueryTextListener{
+    SearchView search;
     LinearLayout segundo_layout;
     TextView txt_id, txt_UserId, txt_title, txt_body, idtexto;
     Button btn_buscar;
     EditText palabra_buscar;
     RecyclerView recycle_view;
     ArrayList<prueba> arraylist;
-    prueba[] prueba;
+    Adaptador adaptador;
+    //prueba[] prueba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycleview);
+        search=findViewById(R.id.search);
         segundo_layout=findViewById(R.id.layout_segundo);
         txt_id=findViewById(R.id.txt_Id);
         txt_UserId=findViewById(R.id.txt_UserId);
@@ -51,19 +55,12 @@ public class recycleview extends AppCompatActivity {
         recycle_view=findViewById(R.id.recycle_view);
         idtexto=findViewById(R.id.Idtexto);
         arraylist = new ArrayList<>();
-        prueba = new prueba[100];
+        //prueba = new prueba[100];
 
         recycle_view=findViewById(R.id.recycle_view);
         recycle_view.setHasFixedSize(true);
         recycle_view.setLayoutManager(new LinearLayoutManager(this));
 
-       /* prueba[] prueba = new prueba[]
-                {
-                        new prueba(1,1,"prueba1" ,"body1"),
-                        new prueba(2,2,"prueba2" ,"body2")
-                };
-        Adaptador adaptador = new Adaptador(prueba, recycleview.this);
-        recycle_view.setAdapter(adaptador);*/
 
         btn_buscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +71,8 @@ public class recycleview extends AppCompatActivity {
 
             }
         });
+
+        search.setOnQueryTextListener(this);
     }
 
 
@@ -90,18 +89,11 @@ public class recycleview extends AppCompatActivity {
                 int i=0;
                 for(prueba pr:lista_busqueda)
                 {
-                    /*String content="";
-                    content+="UserId: "+pr.getUserId() + "\n";
-                    content+="ID: "+pr.getId() + "\n";
-                    content+="Title: "+pr.getTitle() + "\n";
-                    content+="Body: "+pr.getBody() + "\n\n";
-                    idtexto.append(content);*/
-
-                    prueba[i] = new prueba(Integer.valueOf(pr.getUserId()),Integer.valueOf(pr.getId()),"TITULO: "+pr.getTitle() ,"BODY: "+pr.getBody());
-
-                    i++;
+                    //prueba[i] = new prueba(Integer.valueOf(pr.getUserId()),Integer.valueOf(pr.getId()),"TITULO: "+pr.getTitle() ,"BODY: "+pr.getBody());
+                    //i++;
+                    arraylist.add(new prueba(Integer.valueOf(pr.getUserId()),Integer.valueOf(pr.getId()),"TITULO: "+pr.getTitle() ,"BODY: "+pr.getBody()));
                 }
-                Adaptador adaptador = new Adaptador(prueba, recycleview.this);
+                adaptador = new Adaptador(arraylist, recycleview.this);
                 recycle_view.setAdapter(adaptador);
             }
 
@@ -126,5 +118,17 @@ public class recycleview extends AppCompatActivity {
         int v2=(txt_body.getVisibility()==View.GONE)?View.VISIBLE:View.GONE;
         TransitionManager.beginDelayedTransition(segundo_layout, new AutoTransition());
         txt_body.setVisibility(v2);*/
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public boolean onQueryTextChange(String s) {
+        adaptador.Filtrar(s);
+        return false;
     }
 }
